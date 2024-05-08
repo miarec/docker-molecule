@@ -15,7 +15,7 @@ RUN wget -O /etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial https://dl.rockylinux.org
   && echo -e "[rocky-baseos]\nname=Rocky9-BaseOS\nbaseurl=https://dl.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os/\nenabled=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" > /etc/yum.repos.d/rocky-baseos.repo \
   && echo -e "[rocky-appstream]\nname=Rocky9-AppStream\nbaseurl=https://dl.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/\nenabled=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" > /etc/yum.repos.d/rocky-appstream.repo \
   && echo -e "[rocky-extras]\nname=Rocky9-extras\nbaseurl=https://dl.rockylinux.org/pub/rocky/9/extras/x86_64/os/\nenabled=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" > /etc/yum.repos.d/rocky-extras.repo \
-  && echo -e "[rocky-crb]\nname=Rocky9-CRB\nbaseurl=https://dl.rockylinux.org/pub/rocky/9/CRB/x86_64/os/\nenabled=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" > /etc/yum.repos.d/rocky-powertools.repo
+  && echo -e "[rocky-crb]\nname=Rocky9-CRB\nbaseurl=https://dl.rockylinux.org/pub/rocky/9/CRB/x86_64/os/\nenabled=1\ngpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rockyofficial" > /etc/yum.repos.d/rocky-crb.repo
 
 
 VOLUME ["/sys/fs/cgroup"]
