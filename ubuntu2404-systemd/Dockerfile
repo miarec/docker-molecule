@@ -9,6 +9,7 @@ RUN apt-get update \
        sudo \
        iproute2 \
        ca-certificates \
+       python3 \
     && apt-get clean
 
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
