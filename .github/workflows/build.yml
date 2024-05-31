@@ -28,6 +28,7 @@ jobs:
                     - rockylinux9-systemd
                     - ubuntu2004-systemd
                     - ubuntu2204-systemd
+                    - ubuntu2404-systemd
 
         steps:
             - uses: actions/checkout@v4
