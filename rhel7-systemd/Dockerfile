@@ -9,6 +9,7 @@ RUN yum makecache fast \
       iproute \
       which \
       wget \
+      python3 \
  && yum clean all
 
 # Add CentOS repositories to cover shortfall in UBI repositories

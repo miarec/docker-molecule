@@ -8,6 +8,7 @@ RUN yum -y update \
       iproute \
       which \
       wget \
+      python3 \
  && yum clean all
 
 # Add RockyLinux repositories to cover shortfall in UBI packages
