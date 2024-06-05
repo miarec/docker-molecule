@@ -7,6 +7,7 @@ RUN yum -y update \
       sudo \
       iproute \
       which \
+      python3 \
  && yum clean all
 
 VOLUME ["/sys/fs/cgroup"]
