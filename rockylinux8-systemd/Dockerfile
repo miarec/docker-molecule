@@ -17,6 +17,7 @@ RUN yum -y update \
       iproute \
       which \
       procps \
+      python3 \
  && yum clean all
 
 VOLUME ["/sys/fs/cgroup"]
