@@ -12,5 +12,10 @@ RUN apt-get update \
        python3 \
     && apt-get clean
 
+# Set timezone to UTC
+RUN apt-get install tzdata \
+    && ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata
+
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 CMD ["/lib/systemd/systemd"]
