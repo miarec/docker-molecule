@@ -11,17 +11,61 @@ name: Build and publish a Docker images
     workflow_dispatch:
 
 jobs:
-    build_and_publish:
-        name: Build and Publish
-        runs-on: ubuntu-latest
+    build:
+        name: Build
         strategy:
-            # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
             fail-fast: false
-
             matrix:
                 image:
-                    - centos7-systemd
-                    - rhel7-systemd
+                    - rhel8-systemd
+                    - rhel9-systemd
+                    - rockylinux8-systemd
+                    - rockylinux9-systemd
+                    - ubuntu2004-systemd
+                    - ubuntu2204-systemd
+                    - ubuntu2404-systemd
+                runner:
+                    - ubuntu-24.04
+                    - ubuntu-24.04-arm
+
+        runs-on: ${{matrix.runner}}
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set architecture tag
+              id: arch
+              run: |
+                if [[ "${{matrix.runner}}" == *"-arm"* ]]; then
+                  echo "arch=arm64" >> $GITHUB_OUTPUT
+                else
+                  echo "arch=amd64" >> $GITHUB_OUTPUT
+                fi
+
+            - name: Build image
+              run: docker build -t ghcr.io/${{github.repository_owner}}/${{matrix.image}}:${{steps.arch.outputs.arch}} ${{matrix.image}}
+
+            - name: Test image
+              run: docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:rw ghcr.io/${{github.repository_owner}}/${{matrix.image}}:${{steps.arch.outputs.arch}} systemctl status
+
+            - name: Login to GitHub Container Registry
+              if: ${{ github.ref == 'refs/heads/master' }}
+              run: echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
+
+            - name: Push image
+              if: ${{ github.ref == 'refs/heads/master' }}
+              run: docker push ghcr.io/${{github.repository_owner}}/${{matrix.image}}:${{steps.arch.outputs.arch}}
+
+    publish_manifest:
+        name: Publish Multi-arch Manifest
+        needs: build
+        runs-on: ubuntu-latest
+        if: ${{ github.ref == 'refs/heads/master' }}
+
+        strategy:
+            fail-fast: false
+            matrix:
+                image:
                     - rhel8-systemd
                     - rhel9-systemd
                     - rockylinux8-systemd
@@ -31,23 +75,12 @@ jobs:
                     - ubuntu2404-systemd
 
         steps:
-            - uses: actions/checkout@v4
-
-            - name: Build image
-              run: docker build -t ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest ${{matrix.image}}
-
-            - name: Test image
-              run: docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:rw ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest systemctl status
-
-            # If on master branch, build and publish images
             - name: Login to GitHub Container Registry
-              uses: docker/login-action@v3
-              if: ${{ github.ref == 'refs/heads/master' }}
-              with:
-                registry: ghcr.io
-                username: ${{github.actor}}
-                password: ${{secrets.GITHUB_TOKEN}}
+              run: echo "${{secrets.GITHUB_TOKEN}}" | docker login ghcr.io -u ${{github.actor}} --password-stdin
 
-            - name: Publish image
-              if: ${{ github.ref == 'refs/heads/master' }}
-              run: docker push ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest
+            - name: Create and push manifest
+              run: |
+                docker manifest create ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest \
+                  ghcr.io/${{github.repository_owner}}/${{matrix.image}}:amd64 \
+                  ghcr.io/${{github.repository_owner}}/${{matrix.image}}:arm64
+                docker manifest push ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest
