@@ -18,6 +18,7 @@ RUN yum -y update \
       which \
       procps \
       python3 \
+      python3.12 \
  && yum clean all
 
 VOLUME ["/sys/fs/cgroup"]

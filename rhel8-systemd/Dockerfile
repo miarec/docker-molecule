@@ -9,6 +9,7 @@ RUN yum -y update \
       which \
       wget \
       python3 \
+      python3.12 \
  && yum clean all
 
 # Add RockyLinux repositories to cover shortfall in UBI packages
