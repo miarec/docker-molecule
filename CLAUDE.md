@@ -16,7 +16,7 @@ Test an image (verify systemd works):
 docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:rw ghcr.io/miarec/<image-name>:latest systemctl status
 ```
 
-Available image directories: `ubuntu2404-systemd`, `ubuntu2204-systemd`, `ubuntu2004-systemd`, `rockylinux9-systemd`, `rockylinux8-systemd`, `rhel9-systemd`, `rhel8-systemd`, `rhel7-systemd`, `centos7-systemd`
+Available image directories: `ubuntu2604-systemd`, `ubuntu2404-systemd`, `ubuntu2204-systemd`, `ubuntu2004-systemd`, `rockylinux9-systemd`, `rockylinux8-systemd`, `rhel9-systemd`, `rhel8-systemd`, `rhel7-systemd`, `centos7-systemd`
 
 ## CI/CD
 

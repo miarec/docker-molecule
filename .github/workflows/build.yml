@@ -24,6 +24,7 @@ jobs:
                     - ubuntu2004-systemd
                     - ubuntu2204-systemd
                     - ubuntu2404-systemd
+                    - ubuntu2604-systemd
                 runner:
                     - ubuntu-24.04
                     - ubuntu-24.04-arm
@@ -73,6 +74,7 @@ jobs:
                     - ubuntu2004-systemd
                     - ubuntu2204-systemd
                     - ubuntu2404-systemd
+                    - ubuntu2604-systemd
 
         steps:
             - name: Login to GitHub Container Registry

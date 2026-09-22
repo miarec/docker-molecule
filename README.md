@@ -6,6 +6,7 @@ Multi-architecture images (amd64 and arm64) are available.
 
 ## Available Images
 
+- `ghcr.io/miarec/ubuntu2604-systemd:latest`
 - `ghcr.io/miarec/ubuntu2404-systemd:latest`
 - `ghcr.io/miarec/ubuntu2204-systemd:latest`
 - `ghcr.io/miarec/ubuntu2004-systemd:latest`
