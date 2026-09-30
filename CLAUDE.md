@@ -30,6 +30,7 @@ GitHub Actions builds and publishes multi-arch images (amd64/arm64) on push to m
 - **Ubuntu images**: Based on official Ubuntu images, install systemd packages
 - **Rocky Linux images**: Based on official Rocky Linux images, clean up systemd wants
 - **RHEL images**: Based on Red Hat UBI images, add Rocky Linux repos to supplement UBI package availability
-- **CentOS 7/RHEL 7**: Use vault.centos.org mirrors (EOL workaround)
+- **CentOS 7**: Uses vault.centos.org mirrors (EOL workaround)
+- **RHEL 7**: Uses the archive.kernel.org mirror of vault.centos.org, because vault.centos.org returns 403 to the EL7 TLS client. Starts systemd through `init-cgroup.sh`, which mounts a cgroup v1 `name=systemd` hierarchy on cgroup v2 hosts (systemd 219 supports only cgroup v1)
 
 All images mount `/sys/fs/cgroup` and run systemd as PID 1.
