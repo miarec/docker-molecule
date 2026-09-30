@@ -28,6 +28,10 @@ jobs:
                 runner:
                     - ubuntu-24.04
                     - ubuntu-24.04-arm
+                # UBI 7 has no arm64 image
+                include:
+                    - image: rhel7-systemd
+                      runner: ubuntu-24.04
 
         runs-on: ${{matrix.runner}}
 
@@ -75,6 +79,9 @@ jobs:
                     - ubuntu2204-systemd
                     - ubuntu2404-systemd
                     - ubuntu2604-systemd
+                include:
+                    - image: rhel7-systemd
+                      arches: amd64
 
         steps:
             - name: Login to GitHub Container Registry
@@ -82,7 +89,9 @@ jobs:
 
             - name: Create and push manifest
               run: |
-                docker manifest create ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest \
-                  ghcr.io/${{github.repository_owner}}/${{matrix.image}}:amd64 \
-                  ghcr.io/${{github.repository_owner}}/${{matrix.image}}:arm64
+                refs=""
+                for arch in ${{ matrix.arches || 'amd64 arm64' }}; do
+                  refs="$refs ghcr.io/${{github.repository_owner}}/${{matrix.image}}:$arch"
+                done
+                docker manifest create ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest $refs
                 docker manifest push ghcr.io/${{github.repository_owner}}/${{matrix.image}}:latest
