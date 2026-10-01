@@ -19,5 +19,9 @@ RUN yum -y update \
 RUN sed -i 's/^mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-SCLo-* && \
    sed -i 's|^#\s*baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-SCLo-*
 
+# systemd 219 supports only cgroup v1. On cgroup v2 hosts, mount a cgroup v1
+# "name=systemd" hierarchy before systemd starts.
+COPY init-cgroup.sh /usr/local/sbin/init-cgroup.sh
+
 VOLUME ["/sys/fs/cgroup"]
-CMD ["/usr/lib/systemd/systemd"]
+CMD ["/usr/local/sbin/init-cgroup.sh"]

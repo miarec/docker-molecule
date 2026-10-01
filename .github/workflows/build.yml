@@ -28,9 +28,11 @@ jobs:
                 runner:
                     - ubuntu-24.04
                     - ubuntu-24.04-arm
-                # UBI 7 has no arm64 image
+                # UBI 7 and centos/systemd have no arm64 image
                 include:
                     - image: rhel7-systemd
+                      runner: ubuntu-24.04
+                    - image: centos7-systemd
                       runner: ubuntu-24.04
 
         runs-on: ${{matrix.runner}}
@@ -81,6 +83,8 @@ jobs:
                     - ubuntu2604-systemd
                 include:
                     - image: rhel7-systemd
+                      arches: amd64
+                    - image: centos7-systemd
                       arches: amd64
 
         steps:
